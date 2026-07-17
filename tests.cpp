@@ -37,10 +37,10 @@ void test_sort() {
     MyVector<int> vector1(integers, 100);
     MyVector<float> vector2(floats, 100);
     vector1.sort();
-    for (int i = 1; i < vector1.length(); i++)
-        assert(vector1[i - 1] <= vector1[i]);
+    for (int i = 1; (size_t)i < vector1.length(); i++)
+        assert(vector1[(size_t)i - 1] <= vector1[(size_t)i]);
     vector2.sort();
-    for (int i = 1; i < vector2.length(); i++)
+    for (int i = 1; (size_t)i < vector2.length(); i++)
         assert(vector2[i - 1] <= vector2[i]);
 }
 
