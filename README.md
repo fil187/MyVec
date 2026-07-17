@@ -1,4 +1,4 @@
-# Priority Queue implementation
+# Vector implementation
 ![Learning](https://img.shields.io/badge/status-learning-blue)
 
 A Vector implementation in C++.
