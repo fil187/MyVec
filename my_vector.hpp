@@ -123,7 +123,7 @@ public:
      */
     void push(const T& element) {
         if (size == capacity)
-            resize(std::max(1, 2 * capacity));
+            resize(std::max((size_t)1, 2 * capacity));
         
         data[size++] = element;
     }
@@ -170,16 +170,16 @@ private:
      * @post The capacity of this vector is equal to new_capacity
      */
     void resize(size_t new_capacity) {
-        T* destination = new T[new_capacity];
+        T* new_data = new T[new_capacity];
 
         if (new_data == nullptr)
             throw std::bad_alloc();
 
         for (size_t i = 0; i < size; i++)
-            destination[i] = data[i];
+            new_data[i] = data[i];
         
         delete[] data;
-        data = destination;
+        data = new_data;
         capacity = new_capacity;
     }
 
