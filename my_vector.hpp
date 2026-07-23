@@ -1,6 +1,14 @@
 #include <cstddef>
 #include <stdexcept>
     
+/**
+ * @brief A dynamically allocated mutable array.
+ * 
+ * @invariant capacity > 0
+ * @invariant size <= capacity
+ * @invariant data != nullptr
+ * @invariant data points to an allocated array of exactly this->capacity elements T.
+ */
 template <typename T>
 class MyVector {
 
@@ -13,37 +21,57 @@ private:
 
 public:
 
-    MyVector() : MyVector(DEFAULT_CAPACITY) {
-        // constructor with default capacity (100 elements)
-    }
+    /**
+     * @brief Construct an empty vector with the default capacity.
+     */
+    MyVector() : MyVector(DEFAULT_CAPACITY) {}
     
+    /**
+     * @brief Construct an empty vector with the specified capacity.
+     * 
+     * @param capacity The initial storage capacity in characters.
+     * @throw std::invalid_argument if capacity == 0
+     */
     MyVector(size_t capacity) : capacity(capacity), size(0) {
-        // constructor with defined capacity
-        // throws illegal argument exception if capacity is null
-        // @param capacity -> capcity for the vector
         if (capacity == 0)
             throw std::invalid_argument("capacity must be greater than 0");
 
         data = new T[capacity];
     }
 
-    MyVector(const T* source, size_t size) : capacity(max(size << 1, DEFAULT_CAPACITY)), size(size) {
-        // constructor from array
-        // @param source -> the array from wich to build the vector from
-        // @param size -> the size of the array
-        data = new T[max(size << 1, DEFAULT_CAPACITY)];
+    /**
+     * @brief Constructs a vector from the contents of a T[].
+     * 
+     * @par Complexity
+     *      O(m)
+     * 
+     * @param source The T[] whose contents are copied into this vector.
+     * @param size The length of the source array.
+     */
+    MyVector(const T* source, size_t size) : capacity(std::max(size << 1, DEFAULT_CAPACITY)), size(size) {
+        data = new T[std::max(size << 1, DEFAULT_CAPACITY)];
         for (size_t i = 0; i < size; i++)
             data[i] = source[i];
     }
 
+    /**
+     * @brief Constructs a vector from the contents of a vector source.
+     * 
+     * @par Complexity
+     *      O(m)
+     * 
+     * @param source The vector whose contents are copied into this vector.
+     */
     MyVector(const MyVector& source) : capacity(source.capacity), size(source.size) {
-        // construct from other MyVector Object
-        // @param source -> the vector to build this vector from
         data = new T[source.capacity];
         for (size_t i = 0; i < source.size; i++)
             data[i] = source.data[i];
     }
 
+    /**
+     * @throw std::out_of_range if idx >= the length of this String.
+     * @return the element at the specified index.
+     */
     T& operator[](size_t i) {
         if (i >= size)
             throw std::out_of_range("index out of range");
@@ -51,6 +79,15 @@ public:
         return data[i];
     }
 
+    /**
+     * @brief Replaces the contents of this vector with those of source.
+     * 
+     * @par Complexity
+     *      Worst case O(n)
+     * 
+     * @post The contents of this vector are equal to source.
+     * @post The length of this vector equals the length of the source.
+     */
     MyVector& operator=(const MyVector& source) {
         if (this == &source)
             return *this;
@@ -66,17 +103,41 @@ public:
         return *this;
     }
 
+    /**
+     * @return The number of stored elements.
+     */
     size_t length() const {
         return size;
     }
 
+    /**
+     * @brief Adds the element at the end of the vector.
+     * 
+     * @par Complexity
+     *      Worst case O(n)
+     *      Average case O(1)
+     * 
+     * @post The length of this vector is increased by 1.
+     * @post The added element is added to the end of the vector.
+     * @post The rest of the vector remains unchanged.
+     */
     void push(const T& element) {
         if (size == capacity)
-            resize(max(1, 2 * capacity));
+            resize(std::max(1, 2 * capacity));
         
         data[size++] = element;
     }
 
+    /**
+     * @brief Removes the last element of the vector.
+     * 
+     * @par Complexity
+     *      Worst case O(n)
+     *      Average case O(1)
+     * 
+     * @throw std::out_of_range if the vector is empty
+     * @return The removed element.
+     */
     T pop() {
         if (size == 0)
             throw std::out_of_range("can not pop when vector is empty");
@@ -86,13 +147,10 @@ public:
         return data[--size];
     }
 
-    void clear() {
-        // sets the size of the array to 0
-        size = 0;
-    }
-
+    /**
+     * 
+     */
     void sort() requires std::totally_ordered<T> {
-        // calls private sort method for the whole array
         sort(0, size - 1);
     }
 
@@ -101,13 +159,22 @@ public:
     }
 private:
 
-
-    static inline size_t max(size_t a, size_t b) {
-        return (a >= b) ? a : b;
-    }
-
+    /**
+     * @par Complexity
+     *      Worst case O(n)
+     * 
+     * @throw std::bad_alloc if the allocation fails
+     * 
+     * @pre new_capacity > 0
+     * @post The contents of this vector are unchanged
+     * @post The capacity of this vector is equal to new_capacity
+     */
     void resize(size_t new_capacity) {
         T* destination = new T[new_capacity];
+
+        if (new_data == nullptr)
+            throw std::bad_alloc();
+
         for (size_t i = 0; i < size; i++)
             destination[i] = data[i];
         
@@ -116,6 +183,13 @@ private:
         capacity = new_capacity;
     }
 
+    /**
+     * @par Complexity
+     *      Average case O(n * log(n))
+     * 
+     * @post data[left..right] is sorted.
+     * @post All element originaly in data are present in the same number.
+     */
     void sort(size_t left, size_t right) {
         if (left >= right)
             return;

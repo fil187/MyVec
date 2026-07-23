@@ -1,3 +1,6 @@
+# Compilation
 *.exe
 *.o
 *.obj
+# Doxygen 
+docs/
