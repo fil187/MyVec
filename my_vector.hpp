@@ -4,10 +4,10 @@
 /**
  * @brief A dynamically allocated mutable array.
  * 
- * @invariant capacity > 0
- * @invariant size <= capacity
- * @invariant data != nullptr
- * @invariant data points to an allocated array of exactly this->capacity elements T.
+ * @invariant `capacity > 0`
+ * @invariant `size <= capacity`
+ * @invariant `data != nullptr`
+ * @invariant data points to an allocated array of exactly `capacity` elements `T`.
  */
 template <typename T>
 class MyVector {
@@ -29,8 +29,8 @@ public:
     /**
      * @brief Construct an empty vector with the specified capacity.
      * 
-     * @param capacity The initial storage capacity in characters.
-     * @throw std::invalid_argument if capacity == 0
+     * @param capacity The initial number of elements that can be stored without reallocation.
+     * @throw `std::invalid_argument` if `capacity == 0`
      */
     MyVector(size_t capacity) : capacity(capacity), size(0) {
         if (capacity == 0)
@@ -40,13 +40,13 @@ public:
     }
 
     /**
-     * @brief Constructs a vector from the contents of a T[].
+     * @brief Constructs a vector from the contents of a source array.
      * 
      * @par Complexity
      *      O(m)
      * 
-     * @param source The T[] whose contents are copied into this vector.
-     * @param size The length of the source array.
+     * @param source The array whose contents are copied into this vector.
+     * @param size The number of elements in `source`.
      */
     MyVector(const T* source, size_t size) : capacity(std::max(size << 1, DEFAULT_CAPACITY)), size(size) {
         data = new T[std::max(size << 1, DEFAULT_CAPACITY)];
@@ -55,7 +55,7 @@ public:
     }
 
     /**
-     * @brief Constructs a vector from the contents of a vector source.
+     * @brief Constructs a vector from the contents of `source`.
      * 
      * @par Complexity
      *      O(m)
@@ -69,7 +69,7 @@ public:
     }
 
     /**
-     * @throw std::out_of_range if idx >= the length of this String.
+     * @throw `std::out_of_range` if i greater than or equal to the length of this vector.
      * @return the element at the specified index.
      */
     T& operator[](size_t i) {
@@ -80,13 +80,15 @@ public:
     }
 
     /**
-     * @brief Replaces the contents of this vector with those of source.
+     * @brief Replaces the contents of this vector with those of `source`.
      * 
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @post The contents of this vector are equal to source.
-     * @post The length of this vector equals the length of the source.
+     * @throw `std::bad_alloc` if the allocation fails
+     * 
+     * @post The contents of this vector are equal to `source`.
+     * @post The length of this vector equals the length of `source`.
      */
     MyVector& operator=(const MyVector& source) {
         if (this == &source)
@@ -94,6 +96,10 @@ public:
         
         delete[] data;
         data = new T[source.capacity];
+
+        if (data == nullptr)
+            throw std::bad_alloc();
+
         capacity = source.capacity;
         size = source.size;
 
@@ -118,7 +124,7 @@ public:
      *      Average case O(1)
      * 
      * @post The length of this vector is increased by 1.
-     * @post The added element is added to the end of the vector.
+     * @post `element` is the last element of the vector.
      * @post The rest of the vector remains unchanged.
      */
     void push(const T& element) {
@@ -135,7 +141,7 @@ public:
      *      Worst case O(n)
      *      Average case O(1)
      * 
-     * @throw std::out_of_range if the vector is empty
+     * @throw `std::out_of_range` if the vector is empty
      * @return The removed element.
      */
     T pop() {
@@ -148,7 +154,14 @@ public:
     }
 
     /**
+     * @brief Sorts the vector in increasing order
+     * @note This function is only available when `T` models `std::totally_ordered`.
      * 
+     * @par Complexity
+     *      Average case O(n * log(n))
+     * 
+     * @post The vector is sorted in increasing order.
+     * @post All elements originally in data are present in the same number.
      */
     void sort() requires std::totally_ordered<T> {
         sort(0, size - 1);
@@ -163,9 +176,9 @@ private:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @throw std::bad_alloc if the allocation fails
+     * @throw `std::bad_alloc` if the allocation fails
      * 
-     * @pre new_capacity > 0
+     * @pre `new_capacity > 0`
      * @post The contents of this vector are unchanged
      * @post The capacity of this vector is equal to new_capacity
      */
@@ -187,8 +200,8 @@ private:
      * @par Complexity
      *      Average case O(n * log(n))
      * 
-     * @post data[left..right] is sorted.
-     * @post All element originaly in data are present in the same number.
+     * @post `data[left..right]` is sorted.
+     * @post All elements originally in data are present in the same number.
      */
     void sort(size_t left, size_t right) {
         if (left >= right)
