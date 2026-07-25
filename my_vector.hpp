@@ -24,8 +24,8 @@ public:
     /**
      * @brief Construct an empty vector with the default capacity.
      * 
-     * @throw `std::invalid_argument` if `capacity == 0`
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::invalid_argument if `capacity == 0`
+     * @throw std::bad_alloc if the allocation fails
      */
     MyVector() : MyVector(DEFAULT_CAPACITY) {}
     
@@ -33,8 +33,8 @@ public:
      * @brief Construct an empty vector with the specified capacity.
      * 
      * @param capacity The initial number of elements that can be stored without reallocation.
-     * @throw `std::invalid_argument` if `capacity == 0`
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::invalid_argument if `capacity == 0`
+     * @throw std::bad_alloc if the allocation fails
      */
     MyVector(size_t capacity) : capacity(capacity), size(0) {
         if (capacity == 0)
@@ -52,8 +52,8 @@ public:
      * @par Complexity
      *      O(m)
      * 
-     * @throw `std::invalid_argument` if `source == nullptr`
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::invalid_argument if `source == nullptr`
+     * @throw std::bad_alloc if the allocation fails
      * @param source The array whose contents are copied into this vector.
      * @param size The number of elements in `source`.
      */
@@ -71,7 +71,7 @@ public:
      * @par Complexity
      *      O(m)
      * 
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * @param source The vector whose contents are copied into this vector.
      */
     MyVector(const MyVector& source) : MyVector(source.capacity) {
@@ -80,7 +80,7 @@ public:
     }
 
     /**
-     * @throw `std::out_of_range` if i greater than or equal to the length of this vector.
+     * @throw std::out_of_range if i greater than or equal to the length of this vector.
      * @return the element at the specified index.
      */
     T& operator[](size_t i) {
@@ -96,7 +96,7 @@ public:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * 
      * @post The contents of this vector are equal to `source`.
      * @post The length of this vector equals the length of `source`.
@@ -187,7 +187,7 @@ private:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * 
      * @pre `new_capacity > 0`
      * @post The contents of this vector are unchanged
