@@ -152,6 +152,8 @@ public:
      * 
      * @throw std::out_of_range if the vector is empty
      * @return The removed element.
+     * 
+     * @post The rest of the vector remains unchanged.
      */
     T pop() {
         if (size == 0)
