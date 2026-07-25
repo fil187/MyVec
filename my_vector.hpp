@@ -43,7 +43,7 @@ public:
     }
 
     /**
-     * @brief Constructs a vector from the contents of a source array.
+     * @brief Constructs a vector containing copies of the elements in `source`.
      * 
      * @par Complexity
      *      O(m)
@@ -62,7 +62,7 @@ public:
     }
 
     /**
-     * @brief Constructs a vector from the contents of `source`.
+     * @brief Constructs a vector containing copies of the elements in `source`.
      * 
      * @par Complexity
      *      O(m)
