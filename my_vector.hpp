@@ -25,6 +25,7 @@ public:
      * @brief Construct an empty vector with the default capacity.
      * 
      * @throw `std::invalid_argument` if `capacity == 0`
+     * @throw `std::bad_alloc` if the allocation fails
      */
     MyVector() : MyVector(DEFAULT_CAPACITY) {}
     
