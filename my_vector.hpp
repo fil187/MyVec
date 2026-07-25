@@ -23,6 +23,8 @@ public:
 
     /**
      * @brief Construct an empty vector with the default capacity.
+     * 
+     * @throw `std::invalid_argument` if `capacity == 0`
      */
     MyVector() : MyVector(DEFAULT_CAPACITY) {}
     
@@ -31,12 +33,16 @@ public:
      * 
      * @param capacity The initial number of elements that can be stored without reallocation.
      * @throw `std::invalid_argument` if `capacity == 0`
+     * @throw `std::bad_alloc` if the allocation fails
      */
     MyVector(size_t capacity) : capacity(capacity), size(0) {
         if (capacity == 0)
             throw std::invalid_argument("capacity must be greater than 0");
 
         data = new T[capacity];
+
+        if (data == nullptr)
+            throw std::bad_alloc();
     }
 
     /**
@@ -45,13 +51,17 @@ public:
      * @par Complexity
      *      O(m)
      * 
+     * @throw `std::invalid_argument` if `source == nullptr`
+     * @throw `std::bad_alloc` if the allocation fails
      * @param source The array whose contents are copied into this vector.
      * @param size The number of elements in `source`.
      */
-    MyVector(const T* source, size_t size) : capacity(std::max(size << 1, DEFAULT_CAPACITY)), size(size) {
-        data = new T[std::max(size << 1, DEFAULT_CAPACITY)];
-        for (size_t i = 0; i < size; i++)
-            data[i] = source[i];
+    MyVector(const T* source, size_t size) : MyVector(std::max(size << 1, DEFAULT_CAPACITY)) {
+        if (source == nullptr)
+            throw std::invalid_argument("source can not be NULL");
+        
+        this->size = size;
+        std::copy(source, source + size, data);
     }
 
     /**
@@ -60,12 +70,12 @@ public:
      * @par Complexity
      *      O(m)
      * 
+     * @throw `std::bad_alloc` if the allocation fails
      * @param source The vector whose contents are copied into this vector.
      */
-    MyVector(const MyVector& source) : capacity(source.capacity), size(source.size) {
-        data = new T[source.capacity];
-        for (size_t i = 0; i < source.size; i++)
-            data[i] = source.data[i];
+    MyVector(const MyVector& source) : MyVector(source.capacity) {
+        size = source.size;
+        std::copy(source.data, source.data + source.size, data);
     }
 
     /**
@@ -103,8 +113,7 @@ public:
         capacity = source.capacity;
         size = source.size;
 
-        for (size_t i = 0; i < source.size; i++)
-            data[i] = source.data[i];
+        std::copy(source.data, source.data + source.size, data);
         
         return *this;
     }
@@ -141,7 +150,7 @@ public:
      *      Worst case O(n)
      *      Average case O(1)
      * 
-     * @throw `std::out_of_range` if the vector is empty
+     * @throw std::out_of_range if the vector is empty
      * @return The removed element.
      */
     T pop() {
@@ -170,6 +179,7 @@ public:
     ~MyVector() {
         delete[] data;
     }
+    
 private:
 
     /**
@@ -221,4 +231,5 @@ private:
         sort(left, (lower_bound > 0) ? lower_bound - 1 : 0);
         sort(lower_bound + 1, right);
     }
+
 };
