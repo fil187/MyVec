@@ -40,9 +40,6 @@ public:
             throw std::invalid_argument("capacity must be greater than 0");
 
         data = new T[capacity];
-
-        if (data == nullptr)
-            throw std::bad_alloc();
     }
 
     /**
@@ -56,11 +53,11 @@ public:
      * @param source The array whose contents are copied into this vector.
      * @param size The number of elements in `source`.
      */
-    MyVector(const T* source, size_t size) : MyVector(std::max(size << 1, DEFAULT_CAPACITY)) {
+    MyVector(const T* source, size_t size) : capacity(std::max(size << 1, DEFAULT_CAPACITY)), size(size) {
         if (source == nullptr)
             throw std::invalid_argument("source can not be NULL");
         
-        this->size = size;
+        data = new T[std::max(size << 1, DEFAULT_CAPACITY)];
         std::copy(source, source + size, data);
     }
 
@@ -73,8 +70,8 @@ public:
      * @throw std::bad_alloc if the allocation fails
      * @param source The vector whose contents are copied into this vector.
      */
-    MyVector(const MyVector& source) : MyVector(source.capacity) {
-        size = source.size;
+    MyVector(const MyVector& source) : capacity(source.capacity), size(source.size) {
+        data = new T[source.capacity];
         std::copy(source.data, source.data + source.size, data);
     }
 
@@ -106,10 +103,6 @@ public:
         
         delete[] data;
         data = new T[source.capacity];
-
-        if (data == nullptr)
-            throw std::bad_alloc();
-
         capacity = source.capacity;
         size = source.size;
 
@@ -154,6 +147,7 @@ public:
      * @return The removed element.
      * 
      * @post The rest of the vector remains unchanged.
+     * @post The length of this vector is decreased by 1.
      */
     T pop() {
         if (size == 0)
@@ -196,13 +190,7 @@ private:
      */
     void resize(size_t new_capacity) {
         T* new_data = new T[new_capacity];
-
-        if (new_data == nullptr)
-            throw std::bad_alloc();
-
-        for (size_t i = 0; i < size; i++)
-            new_data[i] = data[i];
-        
+        std::copy(data, data + size, new_data);
         delete[] data;
         data = new_data;
         capacity = new_capacity;
