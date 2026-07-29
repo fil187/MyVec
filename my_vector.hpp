@@ -83,7 +83,7 @@ public:
     /**
      * @note Move assignment are disabled because this container's invariants do not permit a moved-from state.
      */
-    MyVector& operator=(const MyVector<T>&&) = delete;
+    MyVector<T>& operator=(const MyVector<T>&&) = delete;
 
     /**
      * @throw std::out_of_range if i greater than or equal to the length of this vector.
