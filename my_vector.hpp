@@ -7,6 +7,7 @@
  * @invariant `capacity > 0`
  * @invariant `size <= capacity`
  * @invariant `data != nullptr`
+ * @invariant `size` is always greater then 25% of capacity iff `capacity <= DEFAULT_CAPACITY`
  * @invariant data points to an allocated array of exactly `capacity` elements `T`.
  */
 template <typename T>
@@ -162,7 +163,7 @@ public:
     T pop() {
         if (size == 0)
             throw std::out_of_range("can not pop when vector is empty");
-        if (size == capacity >> 2) // >> 2 -> 1/4
+        if (capacity > DEFAULT_CAPACITY && size == capacity >> 2) // >> 2 -> 1/4
             resize(capacity >> 1); // >> 1 -> 1/2
         
         return data[--size];
