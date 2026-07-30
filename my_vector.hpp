@@ -79,12 +79,12 @@ public:
     /**
      * @note Move construction is disabled because this container's invariants do not permit a moved-from state.
      */
-    MyVector(const MyVector<T>&&) = delete;
+    MyVector(const MyVector&&) = delete;
 
     /**
      * @note Move assignment is disabled because this container's invariants do not permit a moved-from state.
      */
-    MyVector<T>& operator=(const MyVector<T>&&) = delete;
+    MyVector& operator=(const MyVector&&) = delete;
 
     /**
      * @throw std::out_of_range if i greater than or equal to the length of this vector.
