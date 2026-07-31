@@ -83,13 +83,13 @@ public:
      * @note Move operations are intentionally disabled because 
      *       this container's invariants do not permit a moved-from state.
      */
-    MyVector(const MyVector&&) = delete;
+    MyVector(MyVector&&) = delete;
 
     /**
      * @note Move operations are intentionally disabled because 
      *       this container's invariants do not permit a moved-from state.
      */
-    MyVector& operator=(const MyVector&&) = delete;
+    MyVector& operator=(MyVector&&) = delete;
 
     /**
      * @throw std::out_of_range if i greater than or equal to the length of this vector.
