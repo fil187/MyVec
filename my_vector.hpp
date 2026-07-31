@@ -2,6 +2,12 @@
 #include <stdexcept>
     
 /**
+ * @tparam T must be copyable.
+ */
+template <typename T>
+concept Type = std::copyable<T>;
+
+/**
  * @brief A dynamically allocated mutable array.
  * 
  * @invariant `capacity > 0`
@@ -10,7 +16,7 @@
  * @invariant `size` is always greater then 25% of capacity iff `capacity <= DEFAULT_CAPACITY`
  * @invariant data points to an allocated array of exactly `capacity` elements `T`.
  */
-template <typename T>
+template <Type T>
 class MyVector {
 
 private:
@@ -63,7 +69,8 @@ public:
     }
 
     /**
-     * @brief Constructs a vector containing copies of the elements in `source`.
+     * Constructs a vector containing copies of the elements in `source`.
+     * @brief Copy Constructor.
      * 
      * @par Complexity
      *      O(m)
@@ -77,12 +84,14 @@ public:
     }
 
     /**
-     * @note Move construction is disabled because this container's invariants do not permit a moved-from state.
+     * @note Move operations are intentionally disabled because 
+     *       this container's invariants do not permit a moved-from state.
      */
     MyVector(const MyVector&&) = delete;
 
     /**
-     * @note Move assignment is disabled because this container's invariants do not permit a moved-from state.
+     * @note Move operations are intentionally disabled because 
+     *       this container's invariants do not permit a moved-from state.
      */
     MyVector& operator=(const MyVector&&) = delete;
 
@@ -98,7 +107,8 @@ public:
     }
 
     /**
-     * @brief Replaces the contents of this vector with those of `source`.
+     * Replaces the contents of this vector with those of `source`.
+     * @brief Copy Assignment Operator.
      * 
      * @par Complexity
      *      Worst case O(n)
@@ -174,7 +184,7 @@ public:
      * @note This function is only available when `T` models `std::totally_ordered`.
      * 
      * @par Complexity
-     *      Average case O(n * log(n))
+     *      Average case O(n * log n)
      * 
      * @post The vector is sorted in increasing order.
      * @post All elements originally in data are present in the same number.
@@ -209,7 +219,7 @@ private:
 
     /**
      * @par Complexity
-     *      Average case O(n * log(n))
+     *      Average case O(n * log n)
      * 
      * @post `data[left..right]` is sorted.
      * @post All elements originally in data are present in the same number.
