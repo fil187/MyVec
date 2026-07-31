@@ -1,14 +1,10 @@
 #include <cstddef>
 #include <stdexcept>
-    
-/**
- * @tparam T must be copyable.
- */
-template <typename T>
-concept Type = std::copyable<T>;
 
 /**
  * @brief A dynamically allocated mutable array.
+ * 
+ * @tparam T must be copyable.
  * 
  * @invariant `capacity > 0`
  * @invariant `size <= capacity`
@@ -16,7 +12,7 @@ concept Type = std::copyable<T>;
  * @invariant `size` is always greater then 25% of capacity iff `capacity <= DEFAULT_CAPACITY`
  * @invariant data points to an allocated array of exactly `capacity` elements `T`.
  */
-template <Type T>
+template <std::copyable T>
 class MyVector {
 
 private:
