@@ -4,3 +4,5 @@
 *.obj
 # Doxygen 
 docs/
+# Google Test
+test-results.xml
