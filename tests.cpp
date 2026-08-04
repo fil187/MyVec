@@ -4,16 +4,14 @@
 using TestedTypes = ::testing::Types<int, double, std::string>;
 
 /**
- * @invariant `i_array_1` is of length `40`
- * @invariant `f_array_1` is of length `40`
- * @invariant `s_array_1` is of length `40`
- * @invariant `i_array_2` is of length `60`
- * @invariant `f_array_2` is of length `60`
- * @invariant `s_array_2` is of length `60`
+ * @invariant All array numbered `1` have length `40`
+ * @invariant All array numbered `2` have length `60`
  */
 template <typename T>
 class MyVectorTest : public ::testing::Test {
+
 protected:
+
     static inline const int i_array_1[40] = {73, 12, 98, 45, 21, 67, 34, 89, 5, 56,18, 92, 41, 77, 29, 63, 10, 84, 37, 50,96, 14, 58, 25, 71, 3, 88, 46, 19, 65,32, 81, 7, 54, 99, 27, 60, 39, 16, 75};
     static inline const int i_array_2[60] = {42, 17, 89, 3, 56, 91, 24, 68, 12, 77, 35, 8, 94, 51, 26, 73, 14, 60, 99, 31, 47, 5, 82, 19, 66, 38, 11, 97, 53, 28, 75, 9, 44, 86, 21, 63, 16, 90, 34, 58, 7, 80, 25, 49, 93, 13, 70, 36, 54, 2, 88, 41, 65, 18, 79, 30, 95, 57, 22, 84};
     static inline const double f_array_1[40] = {14.72, 83.19, 27.56, 91.04, 35.88, 62.41, 7.93, 48.15, 76.82, 19.67, 54.39, 88.01, 23.74, 69.58, 12.46, 95.30, 41.87, 58.22, 3.91, 81.65, 29.14, 66.78, 17.53, 99.42, 45.26, 72.90, 8.34, 57.11, 31.69, 84.05, 20.48, 63.97, 10.25, 93.56, 38.71, 51.84, 25.09, 79.33, 6.18, 87.60};
@@ -25,9 +23,9 @@ protected:
     size_t get_len_2() { return 60; }
     
     /**
-     * @return The array of the corresponding type.
+     * @return The array number `1` of the corresponding type.
      * 
-     * @post The returned array has length `3`
+     * @note The returned array has length `40`.
      */
     T* get_arr_1() {
         if constexpr (std::is_same_v<T, int>) {
@@ -40,9 +38,9 @@ protected:
     } 
 
     /**
-     * @return The array of the corresponding type.
-     * @post The returned array has length `3`
+     * @return The array number `2` of the corresponding type.
      * 
+     * @note The returned array has length `60`.
      */
     T* get_arr_2() {
         if constexpr (std::is_same_v<T, int>) {
