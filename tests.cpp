@@ -102,7 +102,8 @@ TYPED_TEST(MyVectorTest, CopyConstructorIndependent) {
     EXPECT_EQ(v1.length(), v2.length());
     v1.pop();
     EXPECT_NE(v1.length(), v2.length());
-    EXPECT_EQ(array[len - 1], v2[len - 1]);
+    for (size_t i = 0; i < v2.length(); i++)
+        EXPECT_EQ(array[i], v2[i]);
 }
 
 TYPED_TEST(MyVectorTest, BasicPush) {
@@ -183,6 +184,19 @@ TYPED_TEST(MyVectorTest, NonEmptyMyVectorAssignment) {
     EXPECT_EQ(v1.length(), v2.length());
     for (size_t i = 0; i < v1.length(); i++)
         EXPECT_EQ(v1[i], v2[i]);
+}
+
+TYPED_TEST(MyVectorTest, AssignmentIndependent) {
+    TypeParam* array = this->get_arr_1();
+    size_t len = this->get_len_1();
+    MyVector<TypeParam> v1(array, len);
+    MyVector<TypeParam> v2;
+    v2 = v1;
+    EXPECT_EQ(v1.length(), v2.length());
+    v1.pop();
+    EXPECT_NE(v1.length(), v2.length());
+    for (size_t i = 0; i < v2.length(); i++)
+        EXPECT_EQ(array[i], v2[i]);
 }
 
 TYPED_TEST(MyVectorTest, SelfAssignmen) {
