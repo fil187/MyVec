@@ -69,7 +69,7 @@ TYPED_TEST(MyVectorTest, ConstructorWithInvalidCpacity) {
     EXPECT_THROW(MyVector<TypeParam>(0), std::invalid_argument);
 }
 
-TYPED_TEST(MyVectorTest, ConstructorFromIntArray) {
+TYPED_TEST(MyVectorTest, ConstructorFromArray) {
     MyVector<TypeParam> v(this->get_arr_1(), this->get_len_1());
     EXPECT_EQ(this->get_len_1(), v.length());
 }
